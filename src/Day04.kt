@@ -7,6 +7,7 @@ private fun parseBoards(rawBoardsData: List<String>): List<Board> {
 
 class Board(boardRows: List<String>) {
     private var cells: IntArray
+    private var hasWon = false
 
     init {
         this.cells = boardRows.joinToString(" ")
@@ -31,18 +32,16 @@ class Board(boardRows: List<String>) {
         return null
     }
 
-    fun won(cellRow: Int, cellColumn: Int): Boolean {
+    fun checkIfWon(cellRow: Int, cellColumn: Int): Boolean {
         var rowHits = 0
         var columnHits = 0
 
         for (row in 0 until BOARD_SIZE){
             for (column in 0 until BOARD_SIZE) {
-                when {
-                    row    == cellRow    && this.getCellValue(cellRow, column) == MARKER_VALUE -> rowHits += 1
-                    column == cellColumn && this.getCellValue(row, cellColumn) == MARKER_VALUE -> columnHits += 1
-                }
-
-                if (rowHits >= BOARD_SIZE || columnHits >= BOARD_SIZE){
+                if (row == cellRow       && this.getCellValue(cellRow, column) == MARKER_VALUE) rowHits += 1
+                if (column == cellColumn && this.getCellValue(row, cellColumn) == MARKER_VALUE) columnHits += 1
+                if (rowHits >= BOARD_SIZE || columnHits >= BOARD_SIZE) {
+                    this.hasWon = true
                     return true
                 }
             }
@@ -60,40 +59,62 @@ class Board(boardRows: List<String>) {
 
         return unmarkedSum * winnerNumber
     }
+
+    fun hasNotWon(): Boolean {
+        return !this.hasWon
+    }
 }
 
+fun getWinnerBoardScore(numbersDrawn: IntArray, boards: List<Board>, earlyReturn: Boolean): Int {
+    var winnerScore = -1
+
+    numbersDrawn.forEachIndexed { numberIndex, numberDrawn ->
+        boards.forEach { board ->
+            if (board.hasNotWon()) {
+                board.markNumberAndGetPosition(numberDrawn)?.let { (cellRow, cellColumn) ->
+                    if (numberIndex >= 5 && board.checkIfWon(cellRow, cellColumn)) {
+                        winnerScore = board.getWinScore(numberDrawn)
+
+                        if (earlyReturn) return winnerScore
+                    }
+                }
+            }
+        }
+    }
+
+    return winnerScore
+}
+
+fun getFirstBoardToWinScore(numbersDrawn: IntArray, boards: List<Board>): Int {
+    return getWinnerBoardScore(numbersDrawn, boards, earlyReturn = true)
+}
+
+fun getLastBoardToWinScore(numbersDrawn: IntArray, boards: List<Board>): Int {
+    return getWinnerBoardScore(numbersDrawn, boards, earlyReturn = false)
+}
 
 fun main() {
     fun part1(input: List<String>): Int {
         val numbersDrawn = input.first().split(",").map { it.toInt() }.toIntArray()
         val boards = parseBoards(input.drop(1))
 
-        numbersDrawn.forEachIndexed { numberIndex, numberDrawn ->
-            boards.forEach { board ->
-                board.markNumberAndGetPosition(numberDrawn)?.let { (cellRow, cellColumn) ->
-                    if (numberIndex + 1 >= 5) {
-                        if (board.won(cellRow, cellColumn)) {
-                            return board.getWinScore(numberDrawn)
-                        }
-                    }
-                }
-            }
-        }
-
-        return 0
+        return getFirstBoardToWinScore(numbersDrawn, boards)
     }
 
     fun part2(input: List<String>): Int {
-        return 0
+        val numbersDrawn = input.first().split(",").map { it.toInt() }.toIntArray()
+        val boards = parseBoards(input.drop(1))
+
+        return getLastBoardToWinScore(numbersDrawn, boards)
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day04_test")
     check(part1(testInput) == 4512)
-   // check(part2(testInput) == 230)
+    check(part2(testInput) == 1924)
 
     val input = readInput("Day04")
     println(part1(input))
-    //println(part2(input))
+    println(part2(input))
 
 }
