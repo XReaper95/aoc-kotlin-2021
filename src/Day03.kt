@@ -13,7 +13,7 @@ fun mostCommonDigitAtIndex(input: List<String>, index: Int): Char {
 
     return when {
         inputSize - sumAtIndex <= halfInputSize -> '1'
-        else -> '0'
+        else                                    -> '0'
     }
 }
 

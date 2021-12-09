@@ -1,3 +1,5 @@
+@file:Suppress("KotlinConstantConditions")
+
 fun main() {
     fun part1(input: List<String>): Int {
         var horizontalPosition = 0
@@ -8,8 +10,9 @@ fun main() {
 
             when (command) {
                 "forward" -> horizontalPosition += quantity
-                "up" -> depth -= quantity
-                "down" -> depth += quantity
+                "up"      -> depth -= quantity
+                "down"    -> depth += quantity
+                else      -> {}
             }
         }
 
@@ -26,8 +29,9 @@ fun main() {
 
             when (command) {
                 "forward" -> { horizontalPosition += quantity; depth += aim * quantity }
-                "up" ->  aim -= quantity
-                "down" ->  aim += quantity
+                "up"      ->  aim -= quantity
+                "down"    ->  aim += quantity
+                else      -> {}
             }
         }
 
