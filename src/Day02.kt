@@ -38,7 +38,6 @@ fun main() {
         return horizontalPosition * depth
     }
 
-    // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day02_test")
     check(part1(testInput) == 150)
     check(part2(testInput) == 900)

@@ -36,11 +36,11 @@ fun filterByCriteriaRecursive(input: List<String>, index: Int, least: Boolean ):
 }
 
 fun filterMostCommonByCriteria(input: List<String>): String {
-    return filterByCriteriaRecursive(input, 0, false)
+    return filterByCriteriaRecursive(input, 0, least = false)
 }
 
 fun filterLeastCommonByCriteria(input: List<String>): String {
-    return filterByCriteriaRecursive(input, 0, true)
+    return filterByCriteriaRecursive(input, 0, least = true)
 }
 
 fun main() {
@@ -67,7 +67,6 @@ fun main() {
         return oxygenGeneratorRaring * co2ScrubberRating
     }
 
-    // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day03_test")
     check(part1(testInput) == 198)
     check(part2(testInput) == 230)
