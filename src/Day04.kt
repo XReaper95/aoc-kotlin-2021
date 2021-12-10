@@ -1,9 +1,13 @@
+import kotlin.math.floor
+
 private const val BOARD_SIZE = 5
 private const val MARKER_VALUE = -1
 
 private fun parseBoards(rawBoardsData: List<String>): List<Board> {
     return rawBoardsData.filter { it.isNotEmpty() }.chunked(BOARD_SIZE).map { Board(it) }
 }
+
+data class CellPosition(val row: Int, val column: Int)
 
 class Board(boardRows: List<String>) {
     private var cells: IntArray
@@ -19,39 +23,49 @@ class Board(boardRows: List<String>) {
         assert(this.cells.size == 25)
     }
 
-    fun markNumberAndGetPosition(number: Int): Pair<Int, Int>? {
-        for (row in 0 until BOARD_SIZE){
-            for (column in 0 until BOARD_SIZE) {
-                if (this.cells[(row * BOARD_SIZE) + column] == number){
-                    this.cells[(row * BOARD_SIZE) + column] = MARKER_VALUE
-                    return Pair(row, column)
-                }
+    fun markNumberAndGetPosition(number: Int): CellPosition? {
+        for (index in 0 until this.cells.size){
+            if (this.cells[index] == number) {
+                val position = getPositionFromIndex(index)
+                this.markCell(position.row, position.column)
+
+                return position
             }
         }
 
         return null
     }
 
+    private fun getPositionFromIndex(index: Int): CellPosition {
+        val nearestSizeMultipleDown = floor(BOARD_SIZE.toDouble() * (index / BOARD_SIZE)).toInt()
+        val row = if (nearestSizeMultipleDown > 0) nearestSizeMultipleDown / BOARD_SIZE else 0
+        val column = index - nearestSizeMultipleDown
+
+        return CellPosition(row, column)
+    }
+
     fun checkIfWon(cellRow: Int, cellColumn: Int): Boolean {
         var rowHits = 0
         var columnHits = 0
 
-        for (row in 0 until BOARD_SIZE){
-            for (column in 0 until BOARD_SIZE) {
-                if (row == cellRow       && this.getCellValue(cellRow, column) == MARKER_VALUE) rowHits += 1
-                if (column == cellColumn && this.getCellValue(row, cellColumn) == MARKER_VALUE) columnHits += 1
-                if (rowHits >= BOARD_SIZE || columnHits >= BOARD_SIZE) {
-                    this.hasWon = true
-                    return true
-                }
-            }
+        for (index in 0 until BOARD_SIZE) {
+            if (this.getCellValue(cellRow, index) == MARKER_VALUE) rowHits += 1
+            if (this.getCellValue(index, cellColumn) == MARKER_VALUE) columnHits += 1
         }
 
-        return false
+        if (rowHits >= BOARD_SIZE || columnHits >= BOARD_SIZE) {
+            this.hasWon = true
+        }
+
+        return this.hasWon
     }
 
     private fun getCellValue(cellRow: Int, cellColumn: Int): Int {
         return this.cells[(cellRow * BOARD_SIZE) + cellColumn]
+    }
+
+    private fun markCell(cellRow: Int, cellColumn: Int) {
+        this.cells[(cellRow * BOARD_SIZE) + cellColumn] = MARKER_VALUE
     }
 
     fun getWinScore(winnerNumber: Int): Int {
