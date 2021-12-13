@@ -88,7 +88,6 @@ fun main() {
         return diagram.countCommonUniquePoints(axialOnly = false)
     }
 
-    // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day05_test")
     check(part1(testInput) == 5)
     check(part2(testInput) == 12)
