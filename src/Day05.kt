@@ -56,7 +56,6 @@ class VentLine(x1: Int, y1: Int, x2: Int, y2: Int) {
 class VentDiagram(raw_lines: List<String>) {
     private val pointsRegex = """(\d+),(\d+) -> (\d+),(\d+)""".toRegex()
     private val lines: List<VentLine>
-    private val axialLines: List<VentLine>
 
     init {
         this.lines = raw_lines.map {
@@ -64,12 +63,10 @@ class VentDiagram(raw_lines: List<String>) {
             val (x1, y1, x2, y2) = matchResult!!.destructured
             VentLine(x1.toInt(), y1.toInt(), x2.toInt(), y2.toInt())
         }.toList()
-
-        this.axialLines = this.lines.filter { it.isAxial() }
     }
 
     fun countCommonUniquePoints(axialOnly: Boolean): Int {
-        val lines = if (axialOnly) this.axialLines else this.lines
+        val lines = if (axialOnly) this.getAxialLines() else this.lines
         val overlappedPoints: MutableSet<Point> = mutableSetOf()
 
         for (i in lines.indices) {
@@ -83,9 +80,13 @@ class VentDiagram(raw_lines: List<String>) {
     }
 
     fun printLines(axialOnly: Boolean) {
-        val lines = if (axialOnly) this.axialLines else this.lines
+        val lines = if (axialOnly) this.getAxialLines() else this.lines
 
         lines.forEach { println(it) }
+    }
+
+    private fun getAxialLines(): List<VentLine> {
+        return this.lines.filter { it.isAxial() }
     }
 }
 
