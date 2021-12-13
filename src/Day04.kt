@@ -10,7 +10,7 @@ private fun parseBoards(rawBoardsData: List<String>): List<Board> {
 data class CellPosition(val row: Int, val column: Int)
 
 class Board(boardRows: List<String>) {
-    private var cells: IntArray
+    private val cells: IntArray
     private var hasWon = false
 
     init {
