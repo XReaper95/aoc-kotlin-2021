@@ -1,7 +1,7 @@
 enum class Orientation {
     HORIZONTAL,
     VERTICAL,
-    NON_AXIAL
+    DIAGONAL
 }
 
 data class Point(val x: Int, val y: Int) {
@@ -27,7 +27,7 @@ class VentLine(x1: Int, y1: Int, x2: Int, y2: Int) {
                 this.points = pointsRange.map { Point(x1, it) }.toSet()
             }
             else -> {
-                this.orientation = Orientation.NON_AXIAL
+                this.orientation = Orientation.VERTICAL
                 this.points = emptySet()
             }
         }
@@ -45,8 +45,8 @@ class VentLine(x1: Int, y1: Int, x2: Int, y2: Int) {
         return this.orientation == Orientation.HORIZONTAL || this.orientation == Orientation.VERTICAL
     }
 
-    fun getOverlappingPoints(points: Set<Point>): Set<Point> {
-        return this.points intersect points
+    fun getOverlappingPoints(other: VentLine): Set<Point> {
+        return this.points intersect other.points
     }
 }
 
@@ -67,20 +67,16 @@ class VentDiagram(raw_lines: List<String>) {
 
     fun countCommonUniquePoints(axialOnly: Boolean): Int {
         val lines = if (axialOnly) this.axialLines else this.lines
-        var overlapAcc = 0
-        var overlappedPoints: Set<Point> = emptySet()
+        val overlappedPoints: MutableSet<Point> = mutableSetOf()
 
         for (i in lines.indices) {
             for (j in i + 1 until lines.size) {
-                val nextPointsWithoutOverlap = lines[j].points subtract overlappedPoints
-                val points = lines[i].getOverlappingPoints(nextPointsWithoutOverlap)
-
-                overlapAcc += points.size
-                overlappedPoints = overlappedPoints.union(points)
+                val pointsWithOverlap = lines[i].getOverlappingPoints(lines[j])
+                overlappedPoints.addAll(pointsWithOverlap)
             }
         }
 
-        return overlapAcc
+        return overlappedPoints.size
     }
 
     fun printLines(axialOnly: Boolean) {
@@ -94,7 +90,6 @@ class VentDiagram(raw_lines: List<String>) {
 fun main() {
     fun part1(input: List<String>): Int {
         val diagram = VentDiagram(input)
-        diagram.printLines(axialOnly = true)
         return diagram.countCommonUniquePoints(axialOnly = true)
     }
 
