@@ -4,11 +4,7 @@ enum class Orientation {
     DIAGONAL
 }
 
-data class Point(val x: Int, val y: Int) {
-    override fun toString(): String {
-        return "(${this.x}, ${this.y})"
-    }
-}
+data class Point(val x: Int, val y: Int)
 
 class VentLine(x1: Int, y1: Int, x2: Int, y2: Int) {
     private val orientation: Orientation
@@ -38,10 +34,6 @@ class VentLine(x1: Int, y1: Int, x2: Int, y2: Int) {
 
     private fun buildPointsRange(coord1: Int, coord2: Int): IntProgression {
         return if (coord1 < coord2) coord1..coord2 else coord1 downTo coord2
-    }
-
-    override fun toString(): String {
-        return "${this.orientation}: ${this.points.first()} -> ${this.points.last()}"
     }
 
     fun isAxial(): Boolean {
@@ -77,12 +69,6 @@ class VentDiagram(raw_lines: List<String>) {
         }
 
         return overlappedPoints.size
-    }
-
-    fun printLines(axialOnly: Boolean) {
-        val lines = if (axialOnly) this.getAxialLines() else this.lines
-
-        lines.forEach { println(it) }
     }
 
     private fun getAxialLines(): List<VentLine> {
