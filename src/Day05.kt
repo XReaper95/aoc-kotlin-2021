@@ -12,7 +12,7 @@ data class Point(val x: Int, val y: Int) {
 
 class VentLine(x1: Int, y1: Int, x2: Int, y2: Int) {
     private val orientation: Orientation
-    val points: Set<Point>
+    private val points: Set<Point>
 
     init {
         when {
@@ -27,8 +27,11 @@ class VentLine(x1: Int, y1: Int, x2: Int, y2: Int) {
                 this.points = pointsRange.map { Point(x1, it) }.toSet()
             }
             else -> {
-                this.orientation = Orientation.VERTICAL
-                this.points = emptySet()
+                this.orientation = Orientation.DIAGONAL
+                val horizontalPointsRange = this.buildPointsRange(x1, x2)
+                val verticalPointsRange = this.buildPointsRange(y1, y2)
+                this.points = horizontalPointsRange.zip(verticalPointsRange)
+                    .map { (x, y) -> Point(x, y) }.toSet()
             }
         }
     }
@@ -94,16 +97,17 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return 0
+        val diagram = VentDiagram(input)
+        return diagram.countCommonUniquePoints(axialOnly = false)
     }
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day05_test")
     check(part1(testInput) == 5)
-    //check(part2(testInput) == 1924)
+    check(part2(testInput) == 12)
 
     val input = readInput("Day05")
     println(part1(input))
-    //println(part2(input))
+    println(part2(input))
 
 }
