@@ -1,25 +1,21 @@
 const val CURRENT_FISH_INTERNAL_CLOCK = 6
 const val NEW_FISH_INTERNAL_CLOCK = 8
 
-fun parseFishesState(input: List<String>): IntArray {
-    return input.first().split(",").map { it.toInt() }.toIntArray()
-}
-
 fun simulateFishesGrowthRate(initialFishesState: IntArray, lastGenerationDay: Int): Long {
     val newFishesByDate = LongArray(lastGenerationDay + 1) { 0 }
 
     initialFishesState.forEach { currentFishAge -> ++newFishesByDate[currentFishAge + 1] }
 
-    (0 .. lastGenerationDay).forEach { day ->
+    (0..lastGenerationDay).forEach { day ->
         val nextDayToPopulateInitial = day + CURRENT_FISH_INTERNAL_CLOCK + 1
         val nextDayToPopulateNew = day + NEW_FISH_INTERNAL_CLOCK + 1
         val currentFishesAtDay = newFishesByDate[day]
 
-        if (nextDayToPopulateNew < newFishesByDate.size){
+        if (nextDayToPopulateNew < newFishesByDate.size) {
             newFishesByDate[nextDayToPopulateNew] += currentFishesAtDay
         }
 
-        if (nextDayToPopulateInitial < newFishesByDate.size){
+        if (nextDayToPopulateInitial < newFishesByDate.size) {
             newFishesByDate[nextDayToPopulateInitial] += currentFishesAtDay
         }
     }
@@ -30,7 +26,7 @@ fun simulateFishesGrowthRate(initialFishesState: IntArray, lastGenerationDay: In
 
 fun main() {
     fun part1and2(input: List<String>, days: Int): Long {
-        val initialFishesState = parseFishesState(input)
+        val initialFishesState = parseSingleNumbers(input, ",")
         return simulateFishesGrowthRate(initialFishesState, days)
     }
 

@@ -1,9 +1,11 @@
 fun onesCompliment(binaryStr: String): String {
-    return binaryStr.map{ when (it) {
-        '1'  -> '0'
-        '0'  -> '1'
-        else -> '?'
-    }}.joinToString("")
+    return binaryStr.map {
+        when (it) {
+            '1' -> '0'
+            '0' -> '1'
+            else -> '?'
+        }
+    }.joinToString("")
 }
 
 fun mostCommonDigitAtIndex(input: List<String>, index: Int): Char {
@@ -13,15 +15,15 @@ fun mostCommonDigitAtIndex(input: List<String>, index: Int): Char {
 
     return when {
         inputSize - sumAtIndex <= halfInputSize -> '1'
-        else                                    -> '0'
+        else -> '0'
     }
 }
 
-fun filterByCriteriaRecursive(input: List<String>, index: Int, least: Boolean ): String {
+fun filterByCriteriaRecursive(input: List<String>, index: Int, least: Boolean): String {
     when {
         input.size == 1 -> return input[0]
         input.isEmpty() -> return "0"
-        else            -> {}
+        else -> {}
     }
 
     var criteria = mostCommonDigitAtIndex(input, index)

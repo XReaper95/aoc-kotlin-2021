@@ -5,7 +5,7 @@ fun main() {
 
         input.forEach { currentMeasurement ->
             previousMeasurement?.let { prev ->
-                if (currentMeasurement > prev){
+                if (currentMeasurement > prev) {
                     count += 1
                 }
             }

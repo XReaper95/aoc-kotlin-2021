@@ -24,7 +24,7 @@ class Board(boardRows: List<String>) {
     }
 
     fun markNumberAndGetPosition(number: Int): CellPosition? {
-        for (index in 0 until this.cells.size){
+        for (index in 0 until this.cells.size) {
             if (this.cells[index] == number) {
                 val position = getPositionFromIndex(index)
                 this.markCell(position.row, position.column)
@@ -109,7 +109,7 @@ fun getLastBoardToWinScore(numbersDrawn: IntArray, boards: List<Board>): Int {
 
 fun main() {
     fun part1(input: List<String>): Int {
-        val numbersDrawn = input.first().split(",").map { it.toInt() }.toIntArray()
+        val numbersDrawn = parseSingleNumbers(input, ",")
         val boards = parseBoards(input.drop(1))
 
         return getFirstBoardToWinScore(numbersDrawn, boards)

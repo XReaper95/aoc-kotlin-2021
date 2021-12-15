@@ -10,9 +10,9 @@ fun main() {
 
             when (command) {
                 "forward" -> horizontalPosition += quantity
-                "up"      -> depth -= quantity
-                "down"    -> depth += quantity
-                else      -> {}
+                "up" -> depth -= quantity
+                "down" -> depth += quantity
+                else -> {}
             }
         }
 
@@ -28,10 +28,12 @@ fun main() {
             val quantity = quantityText.toInt()
 
             when (command) {
-                "forward" -> { horizontalPosition += quantity; depth += aim * quantity }
-                "up"      ->  aim -= quantity
-                "down"    ->  aim += quantity
-                else      -> {}
+                "forward" -> {
+                    horizontalPosition += quantity; depth += aim * quantity
+                }
+                "up" -> aim -= quantity
+                "down" -> aim += quantity
+                else -> {}
             }
         }
 
