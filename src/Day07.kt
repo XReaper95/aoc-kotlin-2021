@@ -29,11 +29,9 @@ fun main() {
     fun part2(input: List<String>): Int {
         val positions = parseSingleNumbers(input, ",")
         val resultCandidates = intArrayOf(
-            fuelConsumptionAlignedByAverage(positions, -2),
             fuelConsumptionAlignedByAverage(positions, -1),
             fuelConsumptionAlignedByAverage(positions, 0),
-            fuelConsumptionAlignedByAverage(positions, 1),
-            fuelConsumptionAlignedByAverage(positions, 2)
+            fuelConsumptionAlignedByAverage(positions, 1)
         )
 
         return resultCandidates.minOrNull()!!
