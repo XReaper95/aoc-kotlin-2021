@@ -1,3 +1,8 @@
+package main
+
+import utils.loadInputForDay
+import utils.loadTestInputForDay
+import utils.parseSingleNumbers
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -37,11 +42,11 @@ fun main() {
         return resultCandidates.minOrNull()!!
     }
 
-    val testInput = readInput("Day07_test")
+    val testInput = loadTestInputForDay(7)
     check(part1(testInput) == 37)
     check(part2(testInput) == 168)
 
-    val input = readInput("Day07")
+    val input = loadInputForDay(7)
     println(part1(input))
     println(part2(input))
 }

@@ -1,3 +1,8 @@
+package main
+
+import utils.loadInputForDay
+import utils.loadTestInputForDay
+
 fun main() {
     fun calculation(input: List<Int>): Int {
         var previousMeasurement: Int? = null
@@ -28,11 +33,11 @@ fun main() {
         return calculation(chunkedInput)
     }
 
-    val testInput = readInput("Day01_test")
+    val testInput = loadTestInputForDay(1)
     check(part1(testInput) == 7)
     check(part2(testInput) == 5)
 
-    val input = readInput("Day01")
+    val input = loadInputForDay(1)
     println(part1(input))
     println(part2(input))
 }

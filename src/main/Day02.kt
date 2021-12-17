@@ -1,5 +1,10 @@
 @file:Suppress("KotlinConstantConditions")
 
+package main
+
+import utils.loadInputForDay
+import utils.loadTestInputForDay
+
 fun main() {
     fun part1(input: List<String>): Int {
         var horizontalPosition = 0
@@ -40,11 +45,11 @@ fun main() {
         return horizontalPosition * depth
     }
 
-    val testInput = readInput("Day02_test")
+    val testInput = loadTestInputForDay(2)
     check(part1(testInput) == 150)
     check(part2(testInput) == 900)
 
-    val input = readInput("Day02")
+    val input = loadInputForDay(2)
     println(part1(input))
     println(part2(input))
 }

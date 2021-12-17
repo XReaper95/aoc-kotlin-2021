@@ -1,3 +1,8 @@
+package main
+
+import utils.loadInputForDay
+import utils.loadTestInputForDay
+
 fun onesCompliment(binaryStr: String): String {
     return binaryStr.map {
         when (it) {
@@ -69,11 +74,11 @@ fun main() {
         return oxygenGeneratorRaring * co2ScrubberRating
     }
 
-    val testInput = readInput("Day03_test")
+    val testInput = loadTestInputForDay(3)
     check(part1(testInput) == 198)
     check(part2(testInput) == 230)
 
-    val input = readInput("Day03")
+    val input = loadInputForDay(3)
     println(part1(input))
     println(part2(input))
 

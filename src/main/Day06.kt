@@ -1,3 +1,9 @@
+package main
+
+import utils.loadInputForDay
+import utils.loadTestInputForDay
+import utils.parseSingleNumbers
+
 const val CURRENT_FISH_INTERNAL_CLOCK = 6
 const val NEW_FISH_INTERNAL_CLOCK = 8
 
@@ -30,12 +36,12 @@ fun main() {
         return simulateFishesGrowthRate(initialFishesState, days)
     }
 
-    val testInput = readInput("Day06_test")
+    val testInput = loadTestInputForDay(6)
     check(part1and2(testInput, 18) == 26L)
     check(part1and2(testInput, 80) == 5934L)
     check(part1and2(testInput, 256) == 26_984_457_539L)
 
-    val input = readInput("Day06")
+    val input = loadInputForDay(6)
     println(part1and2(input, 80))
     println(part1and2(input, 256))
 }

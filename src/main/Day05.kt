@@ -1,3 +1,8 @@
+package main
+
+import utils.loadInputForDay
+import utils.loadTestInputForDay
+
 enum class Orientation {
     HORIZONTAL,
     VERTICAL,
@@ -88,11 +93,11 @@ fun main() {
         return diagram.countCommonUniquePoints(axialOnly = false)
     }
 
-    val testInput = readInput("Day05_test")
+    val testInput = loadTestInputForDay(5)
     check(part1(testInput) == 5)
     check(part2(testInput) == 12)
 
-    val input = readInput("Day05")
+    val input = loadInputForDay(5)
     println(part1(input))
     println(part2(input))
 

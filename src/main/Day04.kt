@@ -1,3 +1,8 @@
+package main
+
+import utils.loadInputForDay
+import utils.loadTestInputForDay
+import utils.parseSingleNumbers
 import kotlin.math.floor
 
 private const val BOARD_SIZE = 5
@@ -122,11 +127,11 @@ fun main() {
         return getLastBoardToWinScore(numbersDrawn, boards)
     }
 
-    val testInput = readInput("Day04_test")
+    val testInput = loadTestInputForDay(4)
     check(part1(testInput) == 4512)
     check(part2(testInput) == 1924)
 
-    val input = readInput("Day04")
+    val input = loadInputForDay(4)
     println(part1(input))
     println(part2(input))
 
