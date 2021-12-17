@@ -5,20 +5,7 @@ import utils.loadTestInputForDay
 
 fun main() {
     fun calculation(input: List<Int>): Int {
-        var previousMeasurement: Int? = null
-        var count = 0
-
-        input.forEach { currentMeasurement ->
-            previousMeasurement?.let { prev ->
-                if (currentMeasurement > prev) {
-                    count += 1
-                }
-            }
-
-            previousMeasurement = currentMeasurement
-        }
-
-        return count
+        return input.zipWithNext { current, next -> if (current < next) 1 else 0 }.sum()
     }
 
     fun part1(input: List<String>): Int {
