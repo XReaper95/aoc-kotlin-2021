@@ -80,7 +80,7 @@ fun resolvePatterns(patterns: List<String>): List<FixedPatternAndValue> {
     )
 }
 
-fun outputFromPattern(patterns: List<String>, resolvedPatterns: List<Pair<String, Int>>): Int {
+fun outputFromPattern(patterns: List<String>, resolvedPatterns: List<FixedPatternAndValue>): Int {
     val numericOutput = StringBuilder(4)
 
     for (pattern in patterns){
