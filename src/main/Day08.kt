@@ -21,14 +21,12 @@ fun patternIsUnique(pattern: String): Boolean {
     return pattern.length in UNIQUE_PATTERNS.keys
 }
 
-fun firstSegmentNotIn(strings: List<String>, chars: Set<Char>): Char? {
-    for (char in chars) {
-        for (str in strings) {
-            if (!str.contains(char)) return char
-        }
+fun segmentNotIn(display: String, segments: Set<Char>): Boolean {
+    for (segment in segments) {
+        if (!display.contains(segment)) return true
     }
 
-    return null
+    return false
 }
 
 fun containSameSegments(str1: String, str2: String): Boolean {
@@ -41,34 +39,28 @@ fun containSameSegments(str1: String, str2: String): Boolean {
     return true
 }
 
-// Very inefficient, but works ;)
+// Inefficient, but works ;)
 fun resolvePatterns(patterns: List<String>): List<FixedPatternAndValue> {
-    val uniquePatterns = patterns.filter { !patternIsUnique(it) }.toMutableList()
+    val uniquePatterns = patterns.filter { !patternIsUnique(it) }.toSet()
     val segmentsFrequency = uniquePatterns.joinToString("").groupingBy { it }.eachCount()
     // separate by number of segments
-    val patterns235 = uniquePatterns.filter { it.length == 5 }
-    val patterns069 = uniquePatterns.filter { it.length == 6 }
-
+    val patterns235 = uniquePatterns.filter { it.length == 5 }.toSet()
+    val patterns069 = uniquePatterns subtract patterns235
     // this segment has frequency 3 and is unique to 0, 2 and 6
     val bottomLeftSegment = segmentsFrequency.filter { it.value == 3 }.keys.first()
     val twoPattern = patterns235.first { it.contains(bottomLeftSegment) }
     val ninePattern = patterns069.first { !it.contains(bottomLeftSegment)}
-
-    // these segments have frequency 5 and appear in all numbers except 0 and 2
+    // one of the segments with frequency 5 appear in all displays except 0
     val segmentsWithFreq5 = segmentsFrequency.filter { it.value == 5 }.keys
-    val segmentNotIn0 = firstSegmentNotIn(patterns069, segmentsWithFreq5)!!
-    val zeroPattern = patterns069.first { !it.contains(segmentNotIn0) }
-
+    val zeroPattern = patterns069.first { segmentNotIn(it, segmentsWithFreq5) }
     // can only be 6
-    val sixPattern = patterns069.first {it != zeroPattern && it != ninePattern}
-
+    val sixPattern = (patterns069 subtract setOf(zeroPattern, ninePattern)).first()
     // these segments have frequency 4 and one of them is in 5 and 6
     val segmentsWithFreq4 = segmentsFrequency.filter { it.value == 4 }.keys
     val segmentIn5And6 = segmentsWithFreq4.first { sixPattern.contains(it) }
     val fivePattern = patterns235.first { it.contains(segmentIn5And6) }
-
     // can only be 3
-    val threePattern = patterns235.first {it != twoPattern && it != fivePattern}
+    val threePattern = (patterns235 subtract setOf(twoPattern, fivePattern)).first()
 
     return listOf(
         Pair(zeroPattern, 0),
